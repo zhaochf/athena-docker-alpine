@@ -1,6 +1,8 @@
 FROM alpine:latest
 MAINTAINER zhaochf <zhaochf@aliyun.com>
 
+COPY gosu-amd64 /usr/bin/gosu
+
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
     apk update && \
     apk add --no-cache openssh-server tzdata && \
@@ -9,8 +11,8 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
     ssh-keygen -t rsa -P "" -f /etc/ssh/ssh_host_rsa_key && \
     ssh-keygen -t ecdsa -P "" -f /etc/ssh/ssh_host_ecdsa_key && \
     ssh-keygen -t ed25519 -P "" -f /etc/ssh/ssh_host_ed25519_key && \
-    echo "root:admin" | chpasswd
-
+    echo "root:admin" | chpasswd && \
+    chmod +x /usr/bin/gosu
 
 EXPOSE 22
 
