@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  zoo1:
+    image: zhaochf/athena-alpine-zookeeper:1.0
+    container_name: zoo1
+    restart: always
+    privileged: true
+    hostname: zoo1
+    ports:
+      - "2022:22"
+      - "2181:2181"
+    volumes:
+      - /data/app/docker/zookeeper-cluster/zoo1/conf:/data/app/apache-zookeeper-3.6.2/conf
+      - /data/app/docker/zookeeper-cluster/zoo1/data:/data/app/apache-zookeeper-3.6.2/data
+      - /data/app/docker/zookeeper-cluster/zoo1/datalog:/data/app/apache-zookeeper-3.6.2/datalog
+      - /data/app/docker/zookeeper-cluster/zoo1/logs:/data/app/apache-zookeeper-3.6.2/logs
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=zoo3:2888:3888;2181
+    networks:
+      default:
+        ipv4_address: 172.18.0.11
+  zoo2:
+    image: zhaochf/athena-alpine-zookeeper:1.0
+    container_name: zoo2
+    restart: always
+    privileged: true
+    hostname: zoo2
+    ports:
+      - "2023:22"
+      - "2182:2181"
+    volumes:
+      - /data/app/docker/zookeeper-cluster/zoo2/conf:/data/app/apache-zookeeper-3.6.2/conf
+      - /data/app/docker/zookeeper-cluster/zoo2/data:/data/app/apache-zookeeper-3.6.2/data
+      - /data/app/docker/zookeeper-cluster/zoo2/datalog:/data/app/apache-zookeeper-3.6.2/datalog
+      - /data/app/docker/zookeeper-cluster/zoo2/logs:/data/app/apache-zookeeper-3.6.2/logs
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=0.0.0.0:2888:3888;2181 server.3=zoo3:2888:3888;2181
+    networks:
+      default:
+        ipv4_address: 172.18.0.12
+  zoo3:
+    image: zhaochf/athena-alpine-zookeeper:1.0
+    container_name: zoo3
+    restart: always
+    privileged: true
+    hostname: zoo3
+    ports:
+      - "2024:22"
+      - "2183:2181"
+    volumes:
+      - /data/app/docker/zookeeper-cluster/zoo3/conf:/data/app/apache-zookeeper-3.6.2/conf
+      - /data/app/docker/zookeeper-cluster/zoo3/data:/data/app/apache-zookeeper-3.6.2/data
+      - /data/app/docker/zookeeper-cluster/zoo3/datalog:/data/app/apache-zookeeper-3.6.2/datalog
+      - /data/app/docker/zookeeper-cluster/zoo3/logs:/data/app/apache-zookeeper-3.6.2/logs
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=0.0.0.0:2888:3888;2181
+    networks:
+      default:
+        ipv4_address: 172.18.0.13
+
+networks:
+  default:
+    external:
+      name: clusternet
