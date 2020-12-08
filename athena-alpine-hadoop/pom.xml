@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>athena-alpine-zookeeper</artifactId>
+    <artifactId>athena-alpine-hadoop</artifactId>
 
     <build>
         <plugins>

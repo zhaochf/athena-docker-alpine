@@ -24,6 +24,7 @@
         <module>athena-alpine-ssh</module>
         <module>athena-alpine-jdk8</module>
         <module>athena-alpine-zookeeper</module>
+        <module>athena-zlpine-hadoop</module>
     </modules>
 
 </project>
